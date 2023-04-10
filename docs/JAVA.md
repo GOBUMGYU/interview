@@ -137,9 +137,10 @@ JVM은 스택 기반으로 동작하며, Java Byte Code를 OS에 맞게 해석 �
 
 ### 생성자에 대해 설명
 
-- 생성자는 클래스와 같은 이름의 메소드로, 객체가 생성될 때 호출되는 메소드
 - 명시적으로 생성자를 만들지 않아도 default로 만들어지며, 생성자는 파라미터를 다르게하여 오버로딩 할 수 있다.
-
+- 생성자는 이름은 클래스 이름과 같아야 한다.
+- 생성자는 리턴형이 없다, 객체 초기화가 목적
+- 생성자는 객체 생성시 호출된다.
 ### Wrapper Class란 무엇이며, Boxing과 UnBoxing는 무엇인지 설명
 
 - 기본자료형(Primitive data type)에 대한 객체 표현을 Wrapper class라고 한다.
@@ -179,7 +180,7 @@ JVM은 스택 기반으로 동작하며, Java Byte Code를 OS에 맞게 해석 �
 
 - 변수 또는 메소드의 접근 범위를 설정해주기 위해서 사용하는 자바의 예약어를 의미하고 총 4가지가 있다.
 - public - 접근제한이 없다. (같은 프로젝트 내 어디서든 사용 가능)
-- protected - 해당 패키지 내, 다른 패키지에서 상속받아 자손 클래스에서 접근 가능
+- protected - 해당 패키지 내 접근 가능,패키지가 다르더라도 다른 패키지에서 상속받아 자손 클래스에서 접근 가능
 - default - 해당 패키지 내에서만 접근 가능
 - private - 해당 클래스에서만 접근 가능
 
@@ -284,3 +285,77 @@ hashCode() 메소드를 오버라이딩 하여 리턴된 해시코드 값이 같
 
 - JVM은 직렬화와 역직렬화 하는 시점의 클래스에 대한 버전 번호를 부여하는데, 만약 그 시점에 클래스 정의가 바뀌어 있다면 새로운 버전 번호를 할당하게 된다. 그래서 직렬화할 때의 버전 번호와 역직렬화할 때의 버전 번호가 다르면 역직렬화가 불가능하게 될 수 있기 때문에 이런 문제를 해결하기 위해 SerialVersionUID를 사용
 - 만약 직렬화 할 때 사용한  SerialVersionUID의 값과 역직렬화 하기 위해 사용했던 SerialVersionUID의 값이 다르면 InvaildClassException이 발생 할 수 있다.
+
+### 추가 1
+힙 메모리에 메모리가 할당 되는 것을 레퍼런스 자료형이라 한다.
+
+### 추가 2
+추상메서드는 상속 받아서 오버라이딩 해야 한다.
+
+### 추가 3
+일반클래스 : 내용있는 메서드만 존재
+추상클래스 : 내용있는 메서드도 있고, 추상메서드도 있다.
+인터페이스 : 모든 메서드는 추상 메서드이다.
+
+### 추가 4
+Throwable
+↑
+Compile Exception
+IOException
+FileNotFoundException  
+classNotFoundException
+↑
+Runtime Exception
+ArrayIndexOutOfBoundsException : 배열 예외 발생
+NumberFormatException : 숫자가 아닐때 발생하는 예외
+ArithmeticException : 연산 예외
+
+예외 처리는 왜 해야 하나 ? 자바에서 제공되는 클래스 들
+
+프로그램에서의 오류
+
+컴파일 오류 (compile error)
+
+- 프로그램 코드 작성 중 발생하는 문법적 오류
+- 최근에는 개발환경(eclipse)에서 대부분의 컴파일 오류는 detection 됨
+  실행오류 (runtime error)
+- 실행 중인 프로그램이 의도하지 않은 동작(bug)을 하거나 프로그램이 중지 되는 오류
+- 실행 오류는 비정상 종료가 되는 경우 시스템의 심각한 장애를 발생할 수 있음
+
+예외 처리의 중요성
+
+- 프로그램의 비정상 종료를 피하여 시스템이 원활이 실행되도록 함
+- 실행 오류가 발생한 경우 오류의 과정을 재현하는 것은 현실적으로 힘들다
+- 오류가 발생한 경우 log를 남겨서 추후 log분석을 통해 그 원인을 파악하여 bug를 수정하는 것이 중요
+
+오류와 예외 클래스
+
+- 시스템 오류(error) : 가상 머신에서 발생, 프로그래머가 처리 할 수 없는 오류임
+  동적 메모리가 없는경우, 스택메모리 오버플로우 등
+- 예외(Exception) : 프로그램에서 제어 할 수 있는 오류
+  읽어들이려는 파일이 존재하지 않거나, 네트웍이나 DB연결이 안되는 경우 등
+- 자바는 안전성이 중요한 언어로 대부분 프로그램에서 발생하는 오류에 대해 문법적으로 예외 처리를 해야함
+
+예외 클래스들
+
+- 모든 예외 클래스의 최상위 클래스는 Exception 클래스 Object - > Throwable -> Exception
+- 자바에서는 다양한 예외들에 대해 그 처리를 위한 클래스가 제공되고 있음
+- Arithmetic Exception : 정수를 0으로 나눈 경우 발생 RuntimeException 하위 크래스임
+- NullPointerException : 초기화 되지 않은 Object를 사용하는 경우
+  Dog d = null;
+  System.out.println(dog);;
+- SocketException : IOException 하위 클래스임
+- ArrayIndexOutOfBoundsException : 배열의 크기를 넘어선 위치를 참조하려는 경우 RuntimeException 하위 크래스임
+- FileNotFoundException : 참조하는 파일이 지정된 위치에 존재하지 않는 경우 IOException 하위 클래스임
+- ClassNotFoundException :
+  class.forName("sis.studentinfo.Student"); //클래스가 로드되지 않는 경우
+- InterruptedException : Thread.sleep(), join().Object의 wait()로 non-runnable 상태인 thread를 runnable하게 만들 수 있도록 사용할 수 있음
+
+### 추가 5
+- HashMap의 경우 스레드(동기화)를 지원하지 않는다.
+- 다중 스레드 환경에서 Hashtable은 동기화를 지원
+- Vector 자동 동기화를 스레드 기능이있다. — 채팅
+  - 동시접속 = 동시실행 했을 때 충돌되지 않도록 스케쥴링을 해준다.
+- Hashtable 클래스 : 검색이 빠름(검색이 용이) 스레드 기능이있다.
+- Hashset : 중복 허용
+- ArratyList 중복 허용안함
